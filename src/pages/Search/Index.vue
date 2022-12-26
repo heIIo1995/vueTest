@@ -51,7 +51,7 @@
               </ul>
             </div>
           </div>
-          <!--产品列表-->
+          <!--商品列表-->
           <div class="goods-list">
             <ul class="yui3-g">
               <li class="yui3-u-1-5" v-for="good in goodsList" :key="good.id">
