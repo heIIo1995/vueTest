@@ -30,23 +30,17 @@
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <li :class="{active:switchTypeSort('1')}" @click="changeSort('1')">
+                  <a>
+                    综合
+                    <span v-show="switchTypeSort('1')">{{switchPriceSort}}</span>
+                  </a>
                 </li>
-                <li>
-                  <a href="#">销量</a>
-                </li>
-                <li>
-                  <a href="#">新品</a>
-                </li>
-                <li>
-                  <a href="#">评价</a>
-                </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
+                <li :class="{active:switchTypeSort('2')}" @click="changeSort('2')">
+                  <a>
+                    价格
+                    <span v-show="switchTypeSort('2')">{{switchPriceSort}}</span>
+                  </a>
                 </li>
               </ul>
             </div>
@@ -150,7 +144,7 @@
           //关键字
           keyword: '',
           //排序
-          order: '',
+          order: '1:desc',
           //默认页码
           pageNo: 1,
           //每页展示数据条数
@@ -198,6 +192,13 @@
           this.searchParams.props.push(props)
           this.getSearchData()
         }
+      },
+      //动态修改排序
+      changeSort(tag) {
+        let sort_tag = this.searchParams.order.split(':')[1]
+        let newSortParms = `${tag}:${sort_tag.indexOf('asc') == -1 ? 'asc' : 'desc'}`
+        this.searchParams.order = newSortParms
+        this.getSearchData()
       }
     },
     mounted() {
@@ -205,7 +206,13 @@
     },
     computed: {
       //mapGetters:传递数组
-      ...mapGetters(['goodsList', 'trademarkList', 'attrsList'])
+      ...mapGetters(['goodsList', 'trademarkList', 'attrsList']),
+      switchTypeSort() {
+        return (tag) => this.searchParams.order.indexOf(tag) != -1
+      },
+      switchPriceSort() {
+        return this.searchParams.order.indexOf('asc') != -1 ? '↑' : '↓'
+      },
     },
     watch: {
       $route(newValue, oldValue) {
