@@ -193,7 +193,7 @@
           this.getSearchData()
         }
       },
-      //动态修改排序
+      //动态修改排序并重新获取数据
       changeSort(tag) {
         let sort_tag = this.searchParams.order.split(':')[1]
         let newSortParms = `${tag}:${sort_tag.indexOf('asc') == -1 ? 'asc' : 'desc'}`
