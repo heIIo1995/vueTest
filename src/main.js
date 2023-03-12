@@ -2,9 +2,12 @@ import Vue from 'vue'
 import App from './App.vue'
 //引入三级联动组件(全局组件)
 import TypeNav from '@/components/TypeNav/Index.vue'
+//引入分页组件(全局组件)
+import Pagination from '@/components/Pagination/Index.vue'
 
 //注册全局组件
 Vue.component(TypeNav.name, TypeNav)
+Vue.component(Pagination.name, Pagination)
 
 //引入路由
 import router from '@/router/index.js'
