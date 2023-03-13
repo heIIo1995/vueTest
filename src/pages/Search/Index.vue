@@ -83,7 +83,7 @@
             </ul>
           </div>
           <!--分页器-->
-          <Pagination></Pagination>
+          <Pagination :pageNo="1" :pageSize="3" :total="91" :continues="5"></Pagination>
         </div>
       </div>
     </div>

@@ -3,22 +3,49 @@
     <button>上一页</button>
     <button>1</button>
     <button>···</button>
-    <button>3</button>
-    <button>4</button>
-    <button>5</button>
-    <button>6</button>
-    <button>7</button>
+    <!--v-for和v-if一起使用冲突 v-for的优先级会高于v-if，因此v-if会重复运行在每个v-for中 将v-for用template标签进行包裹即可，因在该标签无特殊含义-->
+    <template v-for="(page,index) in startNumAndEndNum.end">
+      <button :key="index" v-if="page>=startNumAndEndNum.start">{{page}}</button>
+    </template>
     <button>···</button>
-    <button>9</button>
+    <button>{{totalPage}}</button>
     <button>下一页</button>
-
-    <button style="margin-left: 30px">共 60 条</button>
+    <button style="margin-left: 30px">共{{total}}条</button>
+    <div>{{startNumAndEndNum}}</div>
   </div>
 </template>
 
 <script>
   export default {
-    name: 'Pagination'
+    name: 'Pagination',
+    props: ['pageNo', 'pageSize', 'total', 'continues'],
+    computed: {
+      //总页数
+      totalPage() {
+        return Math.ceil(this.total / this.pageSize)
+      },
+      //页码起始位置和结束位置
+      startNumAndEndNum() {
+        const { continues, pageNo, totalPage } = this;
+        let start = 0, end = 0;
+        if (continues > totalPage) {
+          start = 1;
+          end = totalPage;
+        } else {
+          start = pageNo - parseInt(continues / 2);
+          end = pageNo + parseInt(continues / 2);
+          if (start < 1) {
+            start = 1;
+            end = continues;
+          }
+          if (end > totalPage) {
+            start = totalPage - continues + 1;
+            end = totalPage;
+          }
+        }
+        return { start, end }
+      }
+    }
   }
 </script>
 
