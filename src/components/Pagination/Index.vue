@@ -1,17 +1,33 @@
 <template>
   <div class="pagination">
-    <button>上一页</button>
-    <button>1</button>
-    <button>···</button>
+    <button :disabled="pageNo==1" @click="$emit('getPageNo',pageNo-1)">上一页</button>
+    <button
+      v-if="startNumAndEndNum.start>1"
+      @click="$emit('getPageNo',1)"
+      :class="{active:pageNo==1}"
+    >1</button>
+    <button v-if="startNumAndEndNum.start>2">···</button>
     <!--v-for和v-if一起使用冲突 v-for的优先级会高于v-if，因此v-if会重复运行在每个v-for中 将v-for用template标签进行包裹即可，因在该标签无特殊含义-->
     <template v-for="(page,index) in startNumAndEndNum.end">
-      <button :key="index" v-if="page>=startNumAndEndNum.start">{{page}}</button>
+      <button
+        :key="index"
+        v-if="page>=startNumAndEndNum.start"
+        @click="$emit('getPageNo',page)"
+        :disabled="pageNo==page"
+        :class="{active:pageNo==page}"
+      >{{page}}</button>
     </template>
-    <button>···</button>
-    <button>{{totalPage}}</button>
-    <button>下一页</button>
+    <button v-if="startNumAndEndNum.end<totalPage-1">···</button>
+    <button
+      v-if="startNumAndEndNum.end<totalPage"
+      @click="$emit('getPageNo',totalPage)"
+    >{{totalPage}}</button>
+    <button
+      :disabled="pageNo==totalPage"
+      @click="$emit('getPageNo',pageNo+1)"
+      :class="{active:pageNo==totalPage}"
+    >下一页</button>
     <button style="margin-left: 30px">共{{total}}条</button>
-    <div>{{startNumAndEndNum}}</div>
   </div>
 </template>
 

@@ -83,7 +83,13 @@
             </ul>
           </div>
           <!--分页器-->
-          <Pagination :pageNo="1" :pageSize="3" :total="91" :continues="5"></Pagination>
+          <Pagination
+            :pageNo="searchParams.pageNo"
+            :pageSize="searchParams.pageSize"
+            :total="total"
+            :continues="5"
+            @getPageNo="getPageNo"
+          ></Pagination>
         </div>
       </div>
     </div>
@@ -92,7 +98,7 @@
 
 <script>
   import SearchSelector from './SearchSelector/SearchSelector'
-  import { mapGetters } from 'vuex'
+  import { mapGetters, mapState } from 'vuex'
   export default {
     name: 'Search',
     components: {
@@ -167,6 +173,12 @@
         let sort_tag = this.searchParams.order.split(':')[1]
         let newSortParms = `${tag}:${sort_tag.indexOf('asc') == -1 ? 'asc' : 'desc'}`
         this.searchParams.order = newSortParms
+        this.searchParams.pageNo = 1
+        this.getSearchData()
+      },
+      //自定义事件回调函数(获取第几页)
+      getPageNo(pageNo) {
+        this.searchParams.pageNo = pageNo
         this.getSearchData()
       }
     },
@@ -182,6 +194,9 @@
       switchPriceSort() {
         return this.searchParams.order.indexOf('asc') != -1 ? '↑' : '↓'
       },
+      ...mapState({
+        total: state => state.search.searchList.total
+      })
     },
     watch: {
       $route(newValue, oldValue) {
