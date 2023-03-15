@@ -31,3 +31,11 @@ export const reqSearchInfo = (params) =>
     method: 'post',
     data: params,
   })
+
+//获取产品详情页数据
+export const reqGoodsInfo = (skuid) =>
+  request({
+    url: `/item/${skuid}`,
+    method: 'get',
+    data: skuid,
+  })

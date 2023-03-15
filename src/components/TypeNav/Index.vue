@@ -104,19 +104,19 @@
         }
       },
       showDetail() {
-        if (this.$route.name === 'search') {
+        if (this.$route.name === 'search' || this.$route.name === 'detail') {
           this.show = true
         }
       },
       hiddenDetail() {
-        if (this.$route.name === 'search') {
+        if (this.$route.name === 'search' || this.$route.name === 'detail') {
           this.show = false
         }
       }
     },
     mounted() {
       //跳转到search组件时隐藏联动列表
-      if (this.$route.name === 'search') {
+      if (this.$route.name === 'search' || this.$route.name === 'detail') {
         this.show = false
       }
     },
