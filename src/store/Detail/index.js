@@ -19,7 +19,15 @@ const actions = {
     }
   },
 }
-const getters = {}
+const getters = {
+  categoryView(state) {
+    //异步获取 数据没返回前赋值空对象
+    return state.goodInfo.categoryView || {}
+  },
+  skuInfo(state) {
+    return state.goodInfo.skuInfo || {}
+  },
+}
 
 export default {
   state,
