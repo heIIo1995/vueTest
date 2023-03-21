@@ -14,7 +14,7 @@
         <!-- 左侧放大镜区域 -->
         <div class="previewWrap">
           <!--放大镜效果-->
-          <Zoom />
+          <Zoom :skuImageList="skuImageList" />
           <!-- 小图列表 -->
           <ImageList />
         </div>
@@ -349,7 +349,10 @@
       this.$store.dispatch('getGoodInfo', this.$route.params.skuid)
     },
     computed: {
-      ...mapGetters(['categoryView', 'skuInfo'])
+      ...mapGetters(['categoryView', 'skuInfo']),
+      skuImageList() {
+        return this.skuInfo.skuImageList || []
+      }
     }
   }
 </script>
