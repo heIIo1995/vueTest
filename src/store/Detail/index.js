@@ -24,8 +24,13 @@ const getters = {
     //异步获取 数据没返回前赋值空对象
     return state.goodInfo.categoryView || {}
   },
+  //简化产品信息
   skuInfo(state) {
     return state.goodInfo.skuInfo || {}
+  },
+  //简化商品属性信息
+  goodAttrList(state) {
+    return state.goodInfo.spuSaleAttrList || []
   },
 }
 
