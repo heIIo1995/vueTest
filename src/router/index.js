@@ -20,7 +20,7 @@ VueRouter.prototype.push = function push(location) {
 export default new VueRouter({
   routes,
   //配置切换到新路由的滚动行为 y:y轴
-  scrollBehavior(to, from, savedPosition) {
+  scrollBehavior() {
     return { y: 0 }
   },
 })

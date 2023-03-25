@@ -76,12 +76,17 @@
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt" />
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <input
+                  autocomplete="off"
+                  class="itxt"
+                  v-model.number="skuCount"
+                  @change="changeSkuCount"
+                />
+                <a href="javascript:" class="plus" @click="skuCount++">+</a>
+                <a href="javascript:" class="mins" @click="skuCount>1?skuCount--:1">-</a>
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a @click="addShopCard">加入购物车</a>
               </div>
             </div>
           </div>
@@ -322,7 +327,7 @@
 <script>
   import ImageList from './ImageList/ImageList'
   import Zoom from './Zoom/Zoom'
-  import { mapGetters, mapState } from 'vuex'
+  import { mapGetters } from 'vuex'
 
   export default {
     name: 'Detail',
@@ -330,9 +335,10 @@
       ImageList,
       Zoom
     },
-    mounted() {
-      //派发aciton获取产品详情
-      this.$store.dispatch('getGoodInfo', this.$route.params.skuid)
+    data() {
+      return {
+        skuCount: 1
+      }
     },
     methods: {
       changeActiive(attrValue, parentAttr) {
@@ -340,7 +346,35 @@
           item.isChecked = '0';
         })
         attrValue.isChecked = '1'
+      },
+      //监听商品数据修改
+      changeSkuCount() {
+        if (isNaN(this.skuCount) || this.skuCount < 1) {
+          this.skuCount = 1
+        } else {
+          this.skuCount = parseInt(this.skuCount)
+        }
+      },
+      //商品添加到购物车
+      async addShopCard() {
+        //dispatch中直接return的Promise 失败了返回reject 此处可以直接使用try catch来捕获
+        //成功了执行路由跳转 失败了自动跳到catach
+        try {
+          await this.$store.dispatch('addOrModifyShopCart',
+            {
+              skuid: this.$route.params.skuid,
+              skuCount: this.skuCount
+            });
+          //路由跳转 
+          this.$router.push({ name: 'addcartsuccess' })
+        } catch (error) {
+          console.log(error)
+        }
       }
+    },
+    mounted() {
+      //派发aciton获取产品详情
+      this.$store.dispatch('getGoodInfo', this.$route.params.skuid)
     },
     computed: {
       ...mapGetters(['categoryView', 'skuInfo', 'goodAttrList']),

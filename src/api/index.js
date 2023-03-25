@@ -39,3 +39,10 @@ export const reqGoodsInfo = (skuid) =>
     method: 'get',
     data: skuid,
   })
+
+//将商品添加到购物车或者更新个数
+export const reqAddOrModifyShopCart = (skuid, skuCount) =>
+  request({
+    url: `/cart/addToCart/${skuid}/${skuCount}`,
+    method: 'post',
+  })

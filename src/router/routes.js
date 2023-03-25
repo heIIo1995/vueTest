@@ -4,6 +4,7 @@ import Search from '@/pages/Search/Index.vue'
 import Login from '@/pages/Login/Index.vue'
 import Register from '@/pages/Register/Index.vue'
 import Detail from '@/pages/Detail/Index.vue'
+import AddCartSuccess from '@/pages/AddCartSuccess/index.vue'
 
 export default [
   //重定向或者默认路由都行
@@ -34,6 +35,12 @@ export default [
     component: Detail,
     meta: { show: false },
     name: 'detail',
+  },
+  {
+    path: '/addcartsuccess',
+    component: AddCartSuccess,
+    meta: { show: true },
+    name: 'addcartsuccess',
   },
   {
     path: '/login',

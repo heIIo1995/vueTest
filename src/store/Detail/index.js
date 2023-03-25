@@ -1,4 +1,4 @@
-import { reqGoodsInfo } from '@/api/index.js'
+import { reqGoodsInfo, reqAddOrModifyShopCart } from '@/api/index.js'
 
 //vuex模块化开发
 //仓库存储数据
@@ -16,6 +16,15 @@ const actions = {
     let result = await reqGoodsInfo(skuid)
     if (result.code == 200) {
       commit('GetGoodInfo', result.data)
+    }
+  },
+  //将商品添加到购物车中
+  async addOrModifyShopCart({ commit }, { skuid: skuid, skuCount: skuCount }) {
+    let result = await reqAddOrModifyShopCart(skuid, skuCount)
+    if (result.code == 200) {
+      return 'success'
+    } else {
+      return Promise.reject(new Error('fail'))
     }
   },
 }
