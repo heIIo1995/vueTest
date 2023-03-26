@@ -365,8 +365,9 @@
               skuid: this.$route.params.skuid,
               skuCount: this.skuCount
             });
+          sessionStorage.setItem('skuInfo', JSON.stringify(this.skuInfo))
           //路由跳转 
-          this.$router.push({ name: 'addcartsuccess' })
+          this.$router.push({ name: 'addcartsuccess', query: { skuCount: this.skuCount } })
         } catch (error) {
           console.log(error)
         }
