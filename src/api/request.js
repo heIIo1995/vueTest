@@ -4,6 +4,8 @@ import nprogress from 'nprogress'
 import 'nprogress/nprogress.css'
 //start:开启进度条
 //done:关闭进度条
+//引入生成的uuid
+import { getUUID } from '@/utils/index.js'
 
 //二次封装axios
 const request = axios.create({
@@ -12,9 +14,12 @@ const request = axios.create({
   //请求超时时间
   timeout: 3000,
 })
+
 //请求拦截器
 request.interceptors.request.use(
   (config) => {
+    //给请求头添加一个字段模拟雨用户token
+    config.headers.userTempId = getUUID()
     //请求开始前开启进度条
     nprogress.start()
     return config
@@ -23,6 +28,7 @@ request.interceptors.request.use(
     return Promise.reject(new Error(`request error:${error}`))
   }
 )
+
 //响应拦截器
 request.interceptors.response.use(
   (res) => {

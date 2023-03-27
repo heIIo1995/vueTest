@@ -1,9 +1,12 @@
 import { reqGoodsInfo, reqAddOrModifyShopCart } from '@/api/index.js'
+import { getUUID } from '@/utils/index.js'
 
 //vuex模块化开发
 //仓库存储数据
 const state = {
   goodInfo: {},
+  //生成模拟token
+  uuid_token: getUUID(),
 }
 const mutations = {
   GetGoodInfo(state, goodInfo) {

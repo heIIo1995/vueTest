@@ -120,6 +120,15 @@
 <script>
   export default {
     name: 'ShopCart',
+    mounted() {
+      this.getData()
+    },
+    methods: {
+      //获取购物车列表数据
+      getData() {
+        this.$store.dispatch('getCartList');
+      }
+    },
   }
 </script>
 
