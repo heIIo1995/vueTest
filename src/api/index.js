@@ -51,5 +51,5 @@ export const reqAddOrModifyShopCart = (skuid, skuCount) =>
 export const reqShopCartList = () =>
   request({
     url: '/cart/cartList',
-    method: 'post',
+    method: 'get',
   })
