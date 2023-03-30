@@ -20,7 +20,7 @@
             <div class="item-msg">{{cartInfo.skuName}}</div>
           </li>
           <li class="cart-list-con4">
-            <span class="price">{{cartInfo.skuPrice}}</span>
+            <span class="price">{{cartInfo.cartPrice}}</span>
           </li>
           <li class="cart-list-con5">
             <a href="javascript:void(0)" class="mins" @click="changeNum('minus',-1,cartInfo)">-</a>
@@ -30,15 +30,15 @@
               :value="cartInfo.skuNum"
               minnum="1"
               class="itxt"
-              @change="changeNum('change')"
+              @change="changeNum('change',$event.target.value,cartInfo)"
             />
             <a href="javascript:void(0)" class="plus" @click="changeNum('add',+1,cartInfo)">+</a>
           </li>
           <li class="cart-list-con6">
-            <span class="sum">{{cartInfo.skuNum*cartInfo.skuPrice}}</span>
+            <span class="sum">{{cartInfo.skuNum*cartInfo.cartPrice}}</span>
           </li>
           <li class="cart-list-con7">
-            <a href="#none" class="sindelet">删除</a>
+            <a class="sindelet" @click="deleteShop(cartInfo)">删除</a>
             <br />
             <a href="#none">移到收藏</a>
           </li>
@@ -74,6 +74,7 @@
 
 <script>
   import { mapGetters } from 'vuex'
+  import throttle from 'lodash/throttle'
   export default {
     name: 'ShopCart',
     mounted() {
@@ -86,8 +87,46 @@
       },
       //修改商品数量
       //type:区分动作
-      changeNum(type, disNum, card) {
-
+      changeNum: throttle(async function (type, disNum, cart) {
+        switch (type) {
+          case 'add':
+            disNum = 1
+            break;
+          case 'minus':
+            if (cart.skuNum > 1) {
+              disNum - 1
+            } else {
+              disNum = 0
+            }
+            disNum = cart.skuNum > 1 ? -1 : 0
+            break;
+          case 'change':
+            //校验输入
+            if (isNaN(disNum) || disNum < 1) {
+              disNum = 0
+            } else {
+              disNum = parseInt(disNum) - cart.skuNum
+            }
+            break;
+        }
+        try {
+          await this.$store.dispatch('addOrModifyShopCart', {
+            skuid: cart.skuId,
+            skuCount: disNum
+          })
+          this.getData()
+        } catch (error) {
+          console.log(error.message)
+        }
+      }, 500),
+      //删除购物车商品
+      async deleteShop(cart) {
+        try {
+          await this.$store.dispatch('deleteShop', cart.skuId)
+          this.getData()
+        } catch (error) {
+          console.log(error.message)
+        }
       }
     },
     computed: {
@@ -99,7 +138,7 @@
       totalPrice() {
         let sum = 0
         this.cartInfoList.forEach(item => {
-          sum += item.skuNum * item.skuPrice
+          sum += item.skuNum * item.cartPrice
         })
         return sum
       },

@@ -53,3 +53,10 @@ export const reqShopCartList = () =>
     url: '/cart/cartList',
     method: 'get',
   })
+
+//删除购物车商品
+export const reqDeleteShop = (skuid) =>
+  request({
+    url: `/cart/deleteCart/${skuid}`,
+    method: 'delete',
+  })
