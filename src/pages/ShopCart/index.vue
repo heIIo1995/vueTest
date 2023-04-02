@@ -13,7 +13,12 @@
       <div class="cart-body">
         <ul class="cart-list" v-for="cartInfo in cartInfoList" :key="cartInfo.id">
           <li class="cart-list-con1">
-            <input type="checkbox" name="chk_list" :checked="cartInfo.isChecked==1" />
+            <input
+              type="checkbox"
+              name="chk_list"
+              :checked="cartInfo.isChecked==1"
+              @change="modifyStatus(cartInfo,$event)"
+            />
           </li>
           <li class="cart-list-con2">
             <img :src="cartInfo.imgUrl" />
@@ -47,8 +52,8 @@
     </div>
     <div class="cart-tool">
       <div class="select-all">
-        <input class="chooseAll" type="checkbox" :checked="isAllChecked" />
-        <span>全选</span>
+        <input id="sck" class="chooseAll" type="checkbox" :checked="isAllChecked" />
+        <label for="sck">全选</label>
       </div>
       <div class="option">
         <a href="#none">删除选中的商品</a>
@@ -87,6 +92,7 @@
       },
       //修改商品数量
       //type:区分动作
+      //增加节流
       changeNum: throttle(async function (type, disNum, cart) {
         switch (type) {
           case 'add':
@@ -127,7 +133,17 @@
         } catch (error) {
           console.log(error.message)
         }
-      }
+      },
+      //修改商品状态
+      modifyStatus: throttle(async function (cart, event) {
+        try {
+          let status = event.target.checked ? '1' : '0'
+          await this.$store.dispatch('modifyShopStatus', { skuid: cart.skuId, status })
+          this.getData()
+        } catch (error) {
+          console.log(error.message)
+        }
+      }, 1000)
     },
     computed: {
       ...mapGetters(['cartList']),
@@ -138,7 +154,9 @@
       totalPrice() {
         let sum = 0
         this.cartInfoList.forEach(item => {
-          sum += item.skuNum * item.cartPrice
+          if (item.isChecked == 1) {
+            sum += item.skuNum * item.cartPrice
+          }
         })
         return sum
       },

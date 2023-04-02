@@ -60,3 +60,10 @@ export const reqDeleteShop = (skuid) =>
     url: `/cart/deleteCart/${skuid}`,
     method: 'delete',
   })
+
+//修改商品状态
+export const reqModifyShopStatus = (skuid, status) =>
+  request({
+    url: `/cart/checkCart/${skuid}/${status}`,
+    method: 'get',
+  })
