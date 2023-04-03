@@ -33,14 +33,32 @@ const actions = {
   },
   //修改商品状态
   async modifyShopStatus({ commit }, { skuid, status }) {
-    console.log(skuid)
-    console.log(status)
     let result = await reqModifyShopStatus(skuid, status)
     if (result.code == '200') {
       return 'success'
     } else {
       return Promise.reject(new Error('修改状态失败'))
     }
+  },
+  //删除已勾选商品
+  //context:本仓库上下文 可以在仓库中直接派发acitons
+  deleteCheckedShop({ dispatch, getters }) {
+    let shops = []
+    //获取购物车中全部的商品
+    getters.cartList.cartInfoList.forEach((item) => {
+      let result = item.isChecked == 1 ? dispatch('deleteShop', item.skuId) : ''
+      shops.push(result)
+    })
+    return Promise.all(shops)
+  },
+  //全线/反选商品勾选状态
+  checkedAll({ dispatch, state }, status) {
+    let shops = []
+    state.cartList[0].cartInfoList.forEach((item) => {
+      let result = dispatch('modifyShopStatus', { skuid: item.skuId, status })
+      shops.push(result)
+    })
+    return Promise.all(shops)
   },
 }
 const getters = {

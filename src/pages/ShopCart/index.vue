@@ -52,11 +52,17 @@
     </div>
     <div class="cart-tool">
       <div class="select-all">
-        <input id="sck" class="chooseAll" type="checkbox" :checked="isAllChecked" />
+        <input
+          id="sck"
+          class="chooseAll"
+          type="checkbox"
+          :checked="isAllChecked&&cartInfoList.length>0"
+          @change="checkedAll"
+        />
         <label for="sck">全选</label>
       </div>
       <div class="option">
-        <a href="#none">删除选中的商品</a>
+        <a href="javascript:;" @click="deleteCheckedShop">删除选中的商品</a>
         <a href="#none">移到我的关注</a>
         <a href="#none">清除下柜商品</a>
       </div>
@@ -143,7 +149,26 @@
         } catch (error) {
           console.log(error.message)
         }
-      }, 1000)
+      }, 1000),
+      //批量删除选中商品
+      async deleteCheckedShop() {
+        try {
+          await this.$store.dispatch('deleteCheckedShop')
+          this.getData()
+        } catch (error) {
+          console.log(error.message)
+        }
+      },
+      //全选/反选商品
+      async checkedAll(event) {
+        try {
+          let checked = event.target.checked ? 1 : 0
+          await this.$store.dispatch('checkedAll', checked)
+          this.getData()
+        } catch (error) {
+          console.log(error.message)
+        }
+      }
     },
     computed: {
       ...mapGetters(['cartList']),
