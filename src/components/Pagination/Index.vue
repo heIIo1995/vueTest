@@ -1,3 +1,4 @@
+<!--分页公共组件-->
 <template>
   <div class="pagination">
     <button :disabled="pageNo==1" @click="$emit('getPageNo',pageNo-1)">上一页</button>

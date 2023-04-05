@@ -67,3 +67,18 @@ export const reqModifyShopStatus = (skuid, status) =>
     url: `/cart/checkCart/${skuid}/${status}`,
     method: 'get',
   })
+
+//获取验证码
+export const reqGetCode = (phone) =>
+  request({
+    url: `/user/passport/sendCode/${phone}`,
+    method: 'get',
+  })
+
+//注册
+export const reqRegister = (user) =>
+  request({
+    url: '/user/passport/register',
+    data: user,
+    method: 'post',
+  })
