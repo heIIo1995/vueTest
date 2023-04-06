@@ -82,3 +82,18 @@ export const reqRegister = (user) =>
     data: user,
     method: 'post',
   })
+
+//登录
+export const reqLogin = (user) =>
+  request({
+    url: '/user/passport/login',
+    data: user,
+    method: 'post',
+  })
+
+//根据token获取用户信息
+export const reqGetUserInfo = () =>
+  request({
+    url: '/user/passport/auth/getUserInfo',
+    method: 'get',
+  })

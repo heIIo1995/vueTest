@@ -6,6 +6,8 @@ import 'nprogress/nprogress.css'
 //done:关闭进度条
 //引入生成的uuid
 import { getUUID } from '@/utils/index.js'
+//引入store
+import store from '@/store/index.js'
 
 //二次封装axios
 const request = axios.create({
@@ -18,8 +20,12 @@ const request = axios.create({
 //请求拦截器
 request.interceptors.request.use(
   (config) => {
-    //给请求头添加一个字段模拟雨用户token
+    //给请求头添加一个字段模拟用户token
     config.headers.userTempId = getUUID()
+    //将登录后的token写入请求头
+    if (store.state.user.token) {
+      config.headers.token = store.state.user.token
+    }
     //请求开始前开启进度条
     nprogress.start()
     return config
