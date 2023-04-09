@@ -5,6 +5,8 @@ import VueRouter from 'vue-router'
 import routes from './routes.js'
 //使用插件
 Vue.use(VueRouter)
+//引入store
+import store from '@/store/index.js'
 //解决使用push和replace编程式导航时重复导航到同一个路由控制台报错的问题
 //详细信息:https://www.csdn.net/tags/MtTaEg1sNTk1MjIzLWJsb2cO0O0O.html
 const originalReplace = VueRouter.prototype.replace
