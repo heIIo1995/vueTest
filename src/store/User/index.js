@@ -5,11 +5,13 @@ import {
   reqRegister,
   reqLogin,
   reqGetUserInfo,
+  reqLoginOut,
 } from '@/api/index.js'
+import { setToken, getToken, removeToken } from '@/utils/token.js'
 
 const state = {
   code: '',
-  token: '',
+  token: getToken(),
   userInfo: {},
 }
 
@@ -22,6 +24,11 @@ const mutations = {
   },
   GetUserInfo(state, user) {
     state.userInfo = user
+  },
+  LoginOut(state) {
+    state.token = ''
+    state.userInfo = {}
+    removeToken()
   },
 }
 
@@ -49,6 +56,8 @@ const actions = {
     let result = await reqLogin(user)
     if (result.code == '200') {
       commit('Login', result.data.token)
+      //持久化登录token
+      setToken(result.data.token)
       return 'success'
     } else {
       return Promise.reject(new Error(result.message))
@@ -62,6 +71,17 @@ const actions = {
       return 'success'
     } else {
       return Promise.reject(new Error(result.message))
+    }
+  },
+  //退出登录
+  async loginOut({ commit }) {
+    let result = await reqLoginOut()
+    if (result.code == '200') {
+      //actions中不能操作state
+      commit('LoginOut')
+      return 'success'
+    } else {
+      return Promise(new Error(result.message))
     }
   },
 }

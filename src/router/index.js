@@ -17,10 +17,19 @@ VueRouter.prototype.push = function push(location) {
 }
 
 //配置路由
-export default new VueRouter({
+let router = new VueRouter({
   routes,
   //配置切换到新路由的滚动行为 y:y轴
   scrollBehavior() {
     return { y: 0 }
   },
 })
+
+//全局路由前置守卫(路由跳转之前执行)
+router.beforeEach((to, from, next) => {
+  //to:要跳转的路由
+  //from:从哪个路由跳转而来
+  //next:放行操作
+})
+
+export default router

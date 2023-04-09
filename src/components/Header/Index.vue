@@ -12,7 +12,7 @@
           </p>
           <p v-else>
             <a>{{userName}}</a>
-            <router-link class="register" to="/register">退出登录</router-link>
+            <a href="javascript:;" class="register" @click="loginout">退出登录</a>
           </p>
         </div>
         <div class="typeList">
@@ -52,11 +52,20 @@
       }
     },
     methods: {
-      //跳转到搜索组件并携带参数(query)
+      //*跳转到搜索组件并携带参数(query)
       goSearch() {
         let location = { name: 'search', params: { keyword: this.keyWord || undefined } }
         location['query'] = this.$route.query
         this.$router.push(location)
+      },
+      //退出登录
+      async loginout() {
+        try {
+          await this.$store.dispatch('loginOut')
+          this.$router.push({ name: 'home' })
+        } catch (error) {
+          alert(error.message)
+        }
       }
     },
     mounted() {
