@@ -40,7 +40,6 @@
     mounted() {
       //派发action 请求floor组件数据
       this.$store.dispatch('floorList')
-      this.$store.dispatch('getUserInfo');
     },
     computed: {
       ...mapState({

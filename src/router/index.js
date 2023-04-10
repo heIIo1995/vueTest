@@ -28,10 +28,33 @@ let router = new VueRouter({
 })
 
 //全局路由前置守卫(路由跳转之前执行)
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   //to:要跳转的路由
   //from:从哪个路由跳转而来
   //next:放行操作
+  let token = store.state.user.token
+  let name = store.state.user.userInfo.name
+  if (token) {
+    if (to.path == '/login') {
+      next('/')
+    } else {
+      if (name) {
+        next()
+      } else {
+        try {
+          await store.dispatch('getUserInfo')
+          next()
+        } catch (error) {
+          //token已过期
+          //清除token
+          await store.dispatch('loginOut')
+          next('/login')
+        }
+      }
+    }
+  } else {
+    next()
+  }
 })
 
 export default router
