@@ -98,8 +98,23 @@ export const reqGetUserInfo = () =>
     method: 'get',
   })
 
+//退出登录
 export const reqLoginOut = () =>
   request({
     url: 'user/passport/logout',
+    method: 'get',
+  })
+
+//获取用户地址信息
+export const reqGetAddress = () =>
+  request({
+    url: '/user/userAddress/auth/findUserAddressList',
+    method: 'get',
+  })
+
+//结算页面获取商品清单
+export const reqGetOrders = () =>
+  request({
+    url: '/order/auth/trade',
     method: 'get',
   })

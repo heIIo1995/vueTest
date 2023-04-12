@@ -7,6 +7,7 @@ import search from '@/store/Search/index.js'
 import detail from '@/store/Detail/index.js'
 import shopcart from '@/store/ShopCart/index.js'
 import user from '@/store/User/index.js'
+import trade from '@/store/Trade/index.js'
 
 export default new Vuex.Store({
   //合并到大仓库
@@ -16,5 +17,6 @@ export default new Vuex.Store({
     detail,
     shopcart,
     user,
+    trade,
   },
 })

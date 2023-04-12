@@ -6,6 +6,7 @@ import Register from '@/pages/Register/Index.vue'
 import Detail from '@/pages/Detail/Index.vue'
 import AddCartSuccess from '@/pages/AddCartSuccess/index.vue'
 import ShopCart from '@/pages/ShopCart/index.vue'
+import Trade from '@/pages/Trade/Index.vue'
 
 export default [
   //重定向或者默认路由都行
@@ -48,6 +49,12 @@ export default [
     component: ShopCart,
     meta: { show: true },
     name: 'shopcart',
+  },
+  {
+    path: '/trade',
+    component: Trade,
+    meta: { show: true },
+    name: 'trade',
   },
   {
     path: '/login',
