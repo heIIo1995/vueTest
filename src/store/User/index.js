@@ -66,7 +66,7 @@ const actions = {
   //根据token获取用户信息
   async getUserInfo({ commit }) {
     let result = await reqGetUserInfo()
-    if ((result.code = '200')) {
+    if (result.code == '200') {
       commit('GetUserInfo', result.data)
       return 'success'
     } else {

@@ -28,32 +28,18 @@
       </div>
       <div class="detail">
         <h5>商品清单</h5>
-        <ul class="list clearFix">
+        <ul class="list clearFix" v-for="order in orderInfo.detailArrayList" :key="order.skuId">
           <li>
-            <img src="../../assets/images/goods.png" alt />
+            <img :src="order.imgUrl" alt />
           </li>
           <li>
-            <p>Apple iPhone 6s (A1700) 64G 玫瑰金色 移动联通电信4G手机硅胶透明防摔软壳 本色系列</p>
+            <p>{{order.skuName}}</p>
             <h4>7天无理由退货</h4>
           </li>
           <li>
-            <h3>￥5399.00</h3>
+            <h3>￥{{order.orderPrice}}</h3>
           </li>
-          <li>X1</li>
-          <li>有货</li>
-        </ul>
-        <ul class="list clearFix">
-          <li>
-            <img src="../../assets/images/goods.png" alt />
-          </li>
-          <li>
-            <p>Apple iPhone 6s (A1700) 64G 玫瑰金色 移动联通电信4G手机硅胶透明防摔软壳 本色系列</p>
-            <h4>7天无理由退货</h4>
-          </li>
-          <li>
-            <h3>￥5399.00</h3>
-          </li>
-          <li>X1</li>
+          <li>X{{order.skuNum}}</li>
           <li>有货</li>
         </ul>
       </div>
@@ -72,9 +58,9 @@
       <ul>
         <li>
           <b>
-            <i>1</i>件商品，总商品金额
+            <i>{{orderInfo.totalNum}}</i>件商品，总商品金额
           </b>
-          <span>¥5399.00</span>
+          <span>¥{{orderInfo.totalAmount}}</span>
         </li>
         <li>
           <b>返现：</b>
@@ -89,7 +75,7 @@
     <div class="trade">
       <div class="price">
         应付金额:
-        <span>¥5399.00</span>
+        <span>¥{{orderInfo.totalAmount}}</span>
       </div>
       <div class="receiveInfo">
         寄送至:
@@ -123,11 +109,11 @@
     computed: {
       ...mapState({
         address: state => state.trade.address,
-
+        orderInfo: state => state.trade.orders || {}
       }),
       //计算最终选择的地址
       selectAddress() {
-        return this.address.find(item => item.isDefault === '1')
+        return this.address.find(item => item.isDefault === '1') || {}
       }
     }
   }
@@ -278,6 +264,7 @@
 
             p {
               margin-bottom: 20px;
+              min-width: 450px;
             }
 
             h4 {
@@ -287,6 +274,11 @@
 
             h3 {
               color: #e12228;
+            }
+
+            img {
+              width: 100px;
+              height: 100px;
             }
           }
         }

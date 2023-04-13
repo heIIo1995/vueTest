@@ -78,8 +78,8 @@
     name: 'Login',
     data() {
       return {
-        phone: '13716026940',
-        password: '123'
+        phone: '13700000000',
+        password: '111111'
       }
     },
     methods: {
